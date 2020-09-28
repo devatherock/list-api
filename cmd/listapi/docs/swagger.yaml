@@ -1,0 +1,151 @@
+basePath: /
+definitions:
+  models.List:
+    properties:
+      entries:
+        items:
+          $ref: '#/definitions/models.ListEntry'
+        type: array
+      id:
+        example: 8d314920-b0f9-423c-acfa-17cb610370f6
+        type: string
+      name:
+        example: Todo
+        type: string
+    type: object
+  models.ListEntry:
+    properties:
+      selected:
+        example: false
+        type: boolean
+      value:
+        example: Renew insurance
+        type: string
+    type: object
+host: https://listapi.herokuapp.com
+info:
+  contact:
+    url: https://github.com/devatherock
+  description: APIs to manage lists.
+  license:
+    name: MIT
+  termsOfService: http://swagger.io/terms/
+  title: List API
+  version: "1.0"
+paths:
+  /user/{userId}/lists:
+    get:
+      description: Gets all lists for a user
+      parameters:
+      - description: The user id of the user
+        in: path
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.List'
+            type: array
+        "404":
+          description: The user does not have any lists
+      summary: Gets all lists for a user
+    post:
+      consumes:
+      - application/json
+      description: Creates a list
+      parameters:
+      - description: The user id of the user
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: The value of the list
+        in: body
+        name: list
+        required: true
+        schema:
+          $ref: '#/definitions/models.List'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: The created list
+          schema:
+            $ref: '#/definitions/models.List'
+      summary: Creates a list
+  /user/{userId}/lists/{listId}:
+    delete:
+      description: Deletes a specific list of a user
+      parameters:
+      - description: The user id of the user
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: The id of the list to update
+        in: path
+        name: listId
+        required: true
+        type: string
+      responses:
+        "204":
+          description: deleted successfully
+        "404":
+          description: list with the specified id does not exist
+      summary: Deletes a specific list of a user
+    get:
+      description: Gets a specific list of a user
+      parameters:
+      - description: The user id of the user
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: The id of the list to get
+        in: path
+        name: listId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.List'
+        "404":
+          description: list with the specified id does not exist
+      summary: Gets a specific list of a user
+    put:
+      consumes:
+      - application/json
+      description: Updates a specific list of a user
+      parameters:
+      - description: The user id of the user
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: The id of the list to update
+        in: path
+        name: listId
+        required: true
+        type: string
+      - description: The new value of the list
+        in: body
+        name: list
+        required: true
+        schema:
+          $ref: '#/definitions/models.List'
+      responses:
+        "202":
+          description: updated successfully
+        "404":
+          description: list with the specified id does not exist
+      summary: Updates a specific list of a user
+swagger: "2.0"
