@@ -12,7 +12,7 @@
         },
         "version": "1.0"
     },
-    "host": "https://listapi.herokuapp.com",
+    "host": "https://list-service.herokuapp.com",
     "basePath": "/",
     "paths": {
         "/user/{userId}/lists": {

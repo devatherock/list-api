@@ -251,7 +251,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "https://listapi.herokuapp.com",
+	Host:        "https://list-service.herokuapp.com",
 	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "List API",

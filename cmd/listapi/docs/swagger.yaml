@@ -22,7 +22,7 @@ definitions:
         example: Renew insurance
         type: string
     type: object
-host: https://listapi.herokuapp.com
+host: https://list-service.herokuapp.com
 info:
   contact:
     url: https://github.com/devatherock

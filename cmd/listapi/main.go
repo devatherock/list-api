@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/devatherock/list-api/cmd/listapi/apis"
-  _ "github.com/devatherock/list-api/cmd/listapi/docs"
+	_ "github.com/devatherock/list-api/cmd/listapi/docs"
 	util "github.com/devatherock/list-api/cmd/listapi/utilities"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
@@ -21,7 +21,7 @@ import (
 
 // @license.name MIT
 
-// @host https://listapi.herokuapp.com
+// @host https://list-service.herokuapp.com
 // @BasePath /
 func main() {
 	router := mux.NewRouter()
@@ -40,7 +40,7 @@ func main() {
 	if !ok {
 		port = "8080"
 	}
-  router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
+	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 
 	log.Println("Http server listening on port", port)
 	http.ListenAndServe(":"+port, nil)

@@ -1,0 +1,125 @@
+go_lang_image: &go_lang_image
+  docker:
+    - image: circleci/golang:1.15
+
+slack_image: &slack_image
+  docker:
+    - image: devatherock/simple-slack:0.4.0
+
+orbs:
+  heroku: circleci/heroku@1.0.1
+
+work_directory: &work_directory
+  working_directory: ~/list-api
+
+resource_class: &resource_class
+  resource_class: small
+
+version: 2.1
+jobs:
+  test:
+    <<: *go_lang_image
+    <<: *resource_class
+    <<: *work_directory
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-pkg-cache
+      - run: |
+          go get -u github.com/swaggo/swag/cmd/swag
+          cd cmd/listapi
+          swag init
+          cd ../..
+          gofmt -l -w .
+          go vet cmd/listapi/*.go
+  build:
+    <<: *go_lang_image
+    <<: *resource_class
+    environment:
+      CGO_ENABLED: 0
+      GOOS: linux
+    <<: *work_directory
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-pkg-cache
+      - run: go build -o docker/listapi cmd/listapi/main.go
+      - save_cache:
+          paths:
+            - "/go/pkg"
+          key: v1-pkg-cache
+      - persist_to_workspace:
+          root: ~/list-api
+          paths:
+            - docker/listapi
+  deploy:
+    executor: heroku/default
+    <<: *resource_class
+    <<: *work_directory
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker
+      - attach_workspace:
+          at: ~/list-api
+      - run: |
+          TAG=0.1.0
+          docker build -t devatherock/list-api:$TAG docker
+          docker tag devatherock/list-api:$TAG devatherock/list-api:latest
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker push devatherock/list-api:$TAG
+          docker push devatherock/list-api:latest
+          docker tag devatherock/list-api:$TAG registry.heroku.com/list-service/web
+          heroku container:login
+          docker push registry.heroku.com/list-service/web
+          heroku container:release -a list-service web
+
+  notify_success:
+    <<: *slack_image
+    <<: *resource_class
+    environment:
+      TEXT: "Success: {{.CircleBuildUrl}} by {{.CircleUsername}}"
+      COLOR: "#33ad7f"
+      CHANNEL: general
+      TITLE: "Build completed"
+    steps:
+      - run: /bin/simpleslack
+  notify_failure:
+    <<: *slack_image
+    <<: *resource_class
+    environment:
+      TEXT: "Failure: {{.CircleBuildUrl}} by {{.CircleUsername}}"
+      COLOR: "#a1040c"
+      CHANNEL: general
+      TITLE: "Build completed"
+    steps:
+      - run:
+          name: Failure notification
+          command: /bin/simpleslack
+          when: on_fail
+
+workflows:
+  version: 2.1
+  build_publish:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - build
+      - notify_success:
+          requires:
+            - deploy
+      - notify_failure:
+          requires:
+            - deploy
+  pr_check:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore: master
