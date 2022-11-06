@@ -14,7 +14,7 @@ resource_class: &resource_class
 executors:
   docker-executor:
     docker:
-    - image: circleci/golang:1.15
+    - image: circleci/golang:1.18
       auth:
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD

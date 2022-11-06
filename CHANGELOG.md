@@ -4,6 +4,9 @@
 ### Added
 - Config required to deploy to `render.com`
 
+### Changed
+- Upgraded golang to `1.18`
+
 ### Removed
 - Deployment to heroku
 
