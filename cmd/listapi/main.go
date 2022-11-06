@@ -21,7 +21,7 @@ import (
 
 // @license.name MIT
 
-// @host https://list-service.herokuapp.com
+// @host https://list-api.onrender.com
 // @BasePath /
 func main() {
 	router := mux.NewRouter()

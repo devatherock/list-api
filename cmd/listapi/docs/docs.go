@@ -234,7 +234,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "https://list-service.herokuapp.com",
+	Host:             "https://list-api.onrender.com",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "List API",
