@@ -12,7 +12,7 @@
         },
         "version": "1.0"
     },
-    "host": "https://list-service.herokuapp.com",
+    "host": "https://list-api.onrender.com",
     "basePath": "/",
     "paths": {
         "/user/{userId}/lists": {
