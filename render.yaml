@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: list-api
+    env: docker
+    plan: free
+    autoDeploy: false
+    dockerfilePath: ./render/Dockerfile
+    dockerContext: ./render
