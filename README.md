@@ -7,5 +7,5 @@
 APIs for the list mobile app
 
 ## API Reference
-Refer the swagger [spec](https://list-service.herokuapp.com/swagger/doc.json) or the swagger
-[UI](https://list-service.herokuapp.com/swagger/index.html)
+Refer the swagger [spec](https://list-api.onrender.com/swagger/doc.json) or the swagger
+[UI](https://list-api.onrender.com/swagger/index.html)

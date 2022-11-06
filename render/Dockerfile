@@ -1,1 +1,1 @@
-FROM devatherock/list-api:0.1.0
+FROM devatherock/list-api:0.2.0
