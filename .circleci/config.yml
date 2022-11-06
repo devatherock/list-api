@@ -39,9 +39,9 @@ jobs:
             - v1-pkg-cache-{{ checksum "go.mod" }}
             - v1-pkg-cache
       - run: |
-          go get -u github.com/swaggo/swag/cmd/swag
+          go get -u github.com/swaggo/swag/cmd/swag@v1.8.7
           cd cmd/listapi
-          swag init
+          $GOPATH/bin/swag init
           cd ../..
           gofmt -l -w .
           go vet cmd/listapi/*.go
